@@ -1,0 +1,19 @@
+node {
+           def app    
+           stage ('Checkout the code')
+             {
+                checkout scm
+             }
+           stage('Build image') 
+             {  
+                app = docker.build("saracyber88/project_pipeline1")    
+             }
+           stage('Push image') 
+             {
+                docker.withRegistry('https://registry.hub.docker.com', 'Dockerhub') 
+              {            
+                app.push("${env.BUILD_NUMBER}")            
+                app.push("latest")        
+              }    
+             }
+     }
